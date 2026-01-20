@@ -1,120 +1,159 @@
-# DAO Governance Smart Contract System
+#  DAO Governance Smart Contract System
 
-### With Off-Chain Voting Integration
-
----
-
-## Project Overview
-
-This project implements a **complete DAO (Decentralized Autonomous Organization) governance system** on an EVM-compatible blockchain using **Solidity** and **OpenZeppelin**.
-
-It supports:
-
-* Token-weighted voting
-* Proposal creation and lifecycle management
-* Quorum enforcement
-* Secure execution via a timelock
-* A conceptual **off-chain voting (Snapshot-like) integration**
-
-The system is fully **tested**, **Dockerized**, and **reproducible**, making it suitable for both evaluation and real-world DAO learning.
+### With Conceptual Off-Chain Voting Integration
 
 ---
 
-## Architecture
+##  Project Overview
+
+This project implements a **complete DAO (Decentralized Autonomous Organization) governance system** on an EVM-compatible blockchain using **Solidity**, **Hardhat**, and **OpenZeppelin Contracts**.
+
+The system demonstrates how decentralized governance works through:
+
+- Token-weighted voting
+- Proposal creation and lifecycle management
+- Quorum enforcement
+- Secure execution using a timelock
+- Conceptual **off-chain voting (Snapshot-like) integration**
+
+The project is fully **tested**, **Dockerized**, and **reproducible**, making it suitable for evaluation, learning, and portfolio demonstration of real-world DAO governance architecture.
+
+---
+
+##  Architecture
 
 ```
+
 GOVToken (ERC20Votes)
-        |
-        |  delegation & voting power
-        v
+|
+|  delegation & voting power
+v
 DAOGovernor
-        |
-        |  proposals / voting / quorum
-        v
+|
+|  proposals / voting / quorum
+v
 DAOTimelock
-        |
-        |  delayed execution
-        v
+|
+|  delayed execution
+v
 Treasury
-```
-
-### Off-Chain Voting (Bonus)
 
 ```
+
+---
+
+###  Off-Chain Voting (Conceptual)
+
+```
+
 Off-Chain Voting (Snapshot-like)
-        |
-        |  result attestation
-        v
+|
+|  result attestation
+v
 DAOGovernor
-```
-
-### Emergency Control
 
 ```
-Multisig
-   |
-   v
+
+This demonstrates how off-chain voting systems can feed verified results back on-chain.
+
+---
+
+### 🚨 Emergency Control (Conceptual)
+
+```
+
+Multisig Wallet
+|
+v
 EmergencyPause
-```
-
----
-
-## Smart Contracts
-
-* **GOVToken**
-  ERC-20 governance token with delegation and vote snapshots.
-
-* **DAOGovernor**
-  Core governance contract handling proposals, voting, and execution flow.
-
-* **DAOTimelock**
-  Enforces execution delay for approved proposals.
-
-* **Treasury**
-  Holds ETH and executes transfers only via governance.
-
-* **EmergencyPause**
-  Emergency mechanism intended for multisig control.
-
----
-
-## Technology Stack
-
-* Solidity `0.8.20`
-* Hardhat
-* OpenZeppelin Contracts
-* Ethers.js
-* Node.js & npm
-* Docker & Docker Compose
-
----
-
-## Project Structure
 
 ```
-contracts/        Smart contracts
-scripts/          Deployment & off-chain scripts
-test/             Unit tests
-Dockerfile        Docker environment
-docker-compose.yml One-command setup
-.env.example      Environment template
-TEST_REPORT.md    Test execution evidence
-```
+
+An emergency pause mechanism is included to demonstrate DAO safety design patterns.
 
 ---
 
-## Setup Instructions (npm)
+##  Smart Contracts
+
+### **GOVToken**
+- ERC-20 governance token
+- Supports delegation and vote snapshotting
+- Built using `ERC20Votes` and `ERC20Permit`
+
+---
+
+### **DAOGovernor**
+- Core governance contract
+- Handles proposal creation, voting, quorum, and execution
+- Built using OpenZeppelin Governor framework
+
+---
+
+### **DAOTimelock**
+- Enforces mandatory execution delay
+- Prevents immediate execution of proposals
+- Owns and executes approved governance actions
+
+---
+
+### **Treasury**
+- Holds ETH
+- Allows transfers only through successful governance proposals
+
+---
+
+### **EmergencyPause**
+- Conceptual emergency mechanism
+- Intended for multisig-controlled governance safety
+
+---
+
+##  Technology Stack
+
+- **Solidity** `0.8.20`
+- **Hardhat 3**
+- **OpenZeppelin Contracts**
+- **Ethers.js**
+- **Node.js 22 LTS**
+- **Docker & Docker Compose**
+
+---
+
+##  Project Structure
+
+```
+
+contracts/           Smart contracts
+scripts/             Deployment & simulation scripts
+test/                Unit tests
+artifacts/            Hardhat build output (git-ignored)
+cache/                Hardhat cache (git-ignored)
+Dockerfile            Docker environment
+docker-compose.yml    One-command execution
+hardhat.config.js     Hardhat configuration
+TEST_REPORT.md        Verified test results
+README.md             Documentation
+
+````
+
+---
+
+##  Setup Instructions (Local)
 
 ### Prerequisites
 
-* Node.js v16 / v18 / v20
-* npm v8+
+- Node.js **22 LTS**
+- npm v10+
+
+---
 
 ### Install Dependencies
 
 ```bash
 npm install
-```
+````
+
+---
 
 ### Compile Contracts
 
@@ -124,9 +163,9 @@ npx hardhat compile
 
 ---
 
-## Environment Variables
+##  Environment Variables
 
-Create a local `.env` file :
+Create a `.env` file:
 
 ```
 PRIVATE_KEY=your_private_key_here
@@ -137,19 +176,23 @@ A template is provided in `.env.example`.
 
 ---
 
-## Run Local Blockchain
+##  Run Local Blockchain
 
 ```bash
 npx hardhat node
 ```
 
-This starts a local network at `http://127.0.0.1:8545`.
+Local network runs at:
+
+```
+http://127.0.0.1:8545
+```
 
 ---
 
-## Deploy Contracts (Local)
+##  Deploy Contracts (Local)
 
-Open a new terminal and run:
+In a new terminal:
 
 ```bash
 npx hardhat run scripts/deploy.js --network localhost
@@ -166,32 +209,46 @@ Treasury deployed
 
 ---
 
-## Governance Flow (How It Works)
+##  Governance Flow
 
-### 1. Delegate Voting Power
+### 1️ Delegate Voting Power
 
-```bash
-await token.delegate(user.address)
+```js
+await token.delegate(user.address);
 ```
 
-### 2. Create a Proposal
+---
 
-```bash
-await governor.propose(...)
+### 2️ Create Proposal
+
+```js
+await governor.propose(...);
 ```
 
-### 3. Vote on Proposal
+---
 
-```bash
-await governor.castVote(proposalId, 1)
+### 3️ Vote on Proposal
+
+```js
+await governor.castVote(proposalId, 1);
 ```
 
-### 4. Queue & Execute (after voting + timelock)
+Vote options:
 
-```bash
-await governor.queue(...)
-await governor.execute(...)
+* `0` → Against
+* `1` → For
+* `2` → Abstain
+
+---
+
+### 4️ Queue & Execute
+
+```js
+await governor.queue(...);
+await governor.execute(...);
 ```
+
+Execution is only possible after the timelock delay.
 
 ---
 
@@ -201,11 +258,11 @@ await governor.execute(...)
 npx hardhat run scripts/offchainVote.js --network localhost
 ```
 
-This simulates submitting an off-chain voting result on-chain by a trusted role.
+This script demonstrates how off-chain voting results could be submitted on-chain by a trusted role, similar to Snapshot-based governance models.
 
 ---
 
-## Testing
+##  Testing
 
 Run unit tests:
 
@@ -213,19 +270,23 @@ Run unit tests:
 npx hardhat test
 ```
 
-Expected result:
+Expected output:
 
 ```
 3 passing
 ```
 
-Verified test output is included in `TEST_REPORT.md`.
+Verified results are included in:
+
+```
+TEST_REPORT.md
+```
 
 ---
 
-## Docker Usage (Mandatory)
+##  Docker Usage
 
-### Build and Run
+### Build & Run
 
 ```bash
 docker compose up --build
@@ -237,37 +298,47 @@ docker compose up --build
 docker compose down
 ```
 
-This allows the entire project to be run with a single command.
+Docker ensures:
+
+* identical environments
+* zero local dependency issues
+* CI/CD-ready execution
 
 ---
 
-## Security Considerations
+##  Security Considerations
 
 * Timelock-controlled execution
 * Role-based access control
-* Emergency pause mechanism
+* Delegated voting power only
+* Emergency pause mechanism (conceptual)
 * No private keys committed
 * Audited OpenZeppelin contracts used
 
 ---
 
-## Gas & Optimization
+##  Gas & Optimization
 
 * Solidity optimizer enabled
-* OpenZeppelin Governor framework used
-* Gas usage analyzed via Hardhat Gas Reporter
+* Optimizer runs: `50`
+* OpenZeppelin Governor framework for efficiency
+* Gas statistics generated during test execution
 
 ---
 
-## Conclusion
+##  Conclusion
 
-This project demonstrates a **secure, modular, and production-style DAO governance system** with testing, Docker support, and off-chain voting integration.
+This project demonstrates a **modular, secure, and production-style DAO governance system**, featuring:
 
-It fulfills **all mandatory and bonus requirements** of the assignment.
+* Token-weighted voting
+* Proposal lifecycle management
+* Quorum enforcement
+* Timelock-secured execution
+* Conceptual off-chain voting integration
+* Full unit testing
+* Dockerized reproducibility
+
+It reflects real-world DAO governance design patterns and fulfills all mandatory requirements of the assignment.
 
 ---
 
-## Author
-
-**Santhoshi**
-GitHub: [https://github.com/Santhoshi003](https://github.com/Santhoshi003)
